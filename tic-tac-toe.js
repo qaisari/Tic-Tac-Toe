@@ -19,7 +19,28 @@ function handleMove(position) {
         console.log("Current position is occupied");
         return false;
     }
+    if (checkWin()) {
+        printBoard();
+        gameActive = false;
+        console.log(`Player ${currentPlayer} won!`);
+    }
     currentPlayer = currentPlayer === "❌" ? "⭕" : "❌";
+}
+function checkWin() {
+    const conditions = [
+        [0,1,2],
+        [3,4,5],
+        [6,7,8],
+        [0,3,6],
+        [1,4,7],
+        [2,5,8],
+        [0,4,8],
+        [2,4,6]
+    ];
+    return conditions.some(conditions => {
+        let [a,b,c] = conditions;
+        return gameBoard[a] === currentPlayer && gameBoard[b] === currentPlayer && gameBoard[c] === currentPlayer;
+    })
 }
 while(gameActive) {
     printBoard();
