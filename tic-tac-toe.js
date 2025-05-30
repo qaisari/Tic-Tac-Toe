@@ -17,12 +17,16 @@ function handleMove(position) {
         gameBoard[position] = currentPlayer;
     } else {
         console.log("Current position is occupied");
-        return false;
     }
     if (checkWin()) {
         printBoard();
         gameActive = false;
         console.log(`Player ${currentPlayer} won!`);
+    }
+    if (gameBoard.every(cell => cell !== " ")) {
+        printBoard();
+        gameActive = false;
+        console.log("The game is draw");
     }
     currentPlayer = currentPlayer === "❌" ? "⭕" : "❌";
 }
