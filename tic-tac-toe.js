@@ -1,34 +1,56 @@
-const prompt = require("prompt-sync")();
-const gameBoard = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
+let gameBoard;
 let currentPlayer = "❌";
-let gameActive = true;
+let text;
 
-function printBoard() {
-    console.log(`
-        ${gameBoard[0]} | ${gameBoard[1]} | ${gameBoard[2]}
-        -------------
-        ${gameBoard[3]} | ${gameBoard[4]} | ${gameBoard[5]}
-        -------------
-        ${gameBoard[6]} | ${gameBoard[7]} | ${gameBoard[8]}
-        `);
+window.addEventListener('DOMContentLoaded', function() {
+    gameBoard = [
+        document.getElementById("cell-0"),
+        document.getElementById("cell-1"),
+        document.getElementById("cell-2"),
+        document.getElementById("cell-3"),
+        document.getElementById("cell-4"),
+        document.getElementById("cell-5"),
+        document.getElementById("cell-6"),
+        document.getElementById("cell-7"),
+        document.getElementById("cell-8")
+    ];
+    text = document.getElementById("text");
+});
+
+function submitMove(input) {
+    if (input >= 0 && input <= 8) {
+        handleMove(input);    
+    } else {
+        alert("Invalid move, try again!");
+    }
 }
 function handleMove(position) {
-    if (gameBoard[position] === " ") {
-        gameBoard[position] = currentPlayer;
+    if (gameBoard[position].textContent === "") {
+        gameBoard[position].textContent = currentPlayer;
     } else {
-        console.log("Current position is occupied");
+        alert("Current position is occupied");
     }
+    
     if (checkWin()) {
-        printBoard();
-        gameActive = false;
-        console.log(`Player ${currentPlayer} won!`);
+        text.innerHTML = `Player ${currentPlayer} won!`;
+        setTimeout(() => {
+            endGame();
+        }, 1000);
+        return;
     }
-    if (gameBoard.every(cell => cell !== " ")) {
-        printBoard();
-        gameActive = false;
-        console.log("The game is draw");
+
+    if (gameBoard.every(cell => cell.textContent !== "")) {
+        text.innerHTML = "The game is draw";
+        setTimeout(() => {
+            endGame();
+        }, 1000);
+        return;
     }
-    currentPlayer = currentPlayer === "❌" ? "⭕" : "❌";
+    setTimeout(() => {
+        currentPlayer = currentPlayer === "❌" ? "⭕" : "❌";
+        text.innerHTML = `Player ${currentPlayer} enter your move (0-8): `;
+    }, 100);
+    
 }
 function checkWin() {
     const conditions = [
@@ -43,15 +65,15 @@ function checkWin() {
     ];
     return conditions.some(conditions => {
         let [a,b,c] = conditions;
-        return gameBoard[a] === currentPlayer && gameBoard[b] === currentPlayer && gameBoard[c] === currentPlayer;
+        return gameBoard[a].textContent === currentPlayer &&
+               gameBoard[b].textContent === currentPlayer &&
+               gameBoard[c].textContent === currentPlayer;
     })
 }
-while(gameActive) {
-    printBoard();
-    let playerInput = prompt(`Player ${currentPlayer} enter your move (0-8): `);
-    if (playerInput >= 0 && playerInput <= 8) {
-        handleMove(playerInput);    
-    } else {
-        console.log("Invalid move, try again!");
-    }
+function startGame() {
+    text.innerHTML = `Player ${currentPlayer} enter your move (0-8): `;
+}
+function endGame() {
+    gameBoard.forEach(cell => cell.textContent = "");
+    text.innerHTML = "Start";
 }

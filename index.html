@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Tic Tac Toe</title>
+        <style>
+            .grid {
+                display: grid;
+                grid-template-columns: repeat(3, 60px);
+                grid-template-rows: repeat(3, 60px);
+                gap: 5px;
+                margin: 40px auto;
+                width: max-content;
+            }
+            .cell {
+            width: 60px;
+            height: 60px;
+            font-size: 2rem;
+            text-align: center;
+            cursor: pointer;
+            }
+            #text {
+                text-align: center;
+                font-size: 1.5rem;
+                margin-top: 20px;
+            }
+        </style>
+        
+    </head>
+    <body>
+        <h3 id="text">Start</h3>
+        <div class="grid">
+            <button class="cell" id="cell-0" onclick="submitMove(0)"></button>
+            <button class="cell" id="cell-1" onclick="submitMove(1)"></button>
+            <button class="cell" id="cell-2" onclick="submitMove(2)"></button>
+            <button class="cell" id="cell-3" onclick="submitMove(3)"></button>
+            <button class="cell" id="cell-4" onclick="submitMove(4)"></button>
+            <button class="cell" id="cell-5" onclick="submitMove(5)"></button>
+            <button class="cell" id="cell-6" onclick="submitMove(6)"></button>
+            <button class="cell" id="cell-7" onclick="submitMove(7)"></button>
+            <button class="cell" id="cell-8" onclick="submitMove(8)"></button>
+        </div>
+        <script src="tic-tac-toe.js"></script>
+    </body>
+</html>
