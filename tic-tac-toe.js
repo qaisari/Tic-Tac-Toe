@@ -55,7 +55,7 @@ function handleMove(position) {
     }
     setTimeout(() => {
         currentPlayer = currentPlayer === "❌" ? "⭕" : "❌";
-        text.innerHTML = `Player ${currentPlayer} enter your move (0-8): `;
+        text.innerHTML = `Player ${currentPlayer} enter your move: `;
     }, 100);
     
 }
@@ -78,7 +78,7 @@ function checkWin() {
     })
 }
 function startGame() {
-    text.innerHTML = `Player ${currentPlayer} enter your move (0-8): `;
+    text.innerHTML = `Player ${currentPlayer} enter your move: `;
 }
 function endGame() {
     gameBoard.forEach(cell => cell.textContent = "");
