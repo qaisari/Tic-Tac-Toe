@@ -1,6 +1,10 @@
 let gameBoard;
 let currentPlayer = "❌";
 let text;
+let x = 0;
+let o = 0;
+let scoreX = document.getElementById("player-x-score");
+let scoreO = document.getElementById("player-o-score");
 
 window.addEventListener('DOMContentLoaded', function() {
     gameBoard = [
@@ -33,6 +37,8 @@ function handleMove(position) {
     
     if (checkWin()) {
         text.innerHTML = `Player ${currentPlayer} won!`;
+        score(currentPlayer);
+        setCellsEnabled(false);
         setTimeout(() => {
             endGame();
         }, 1000);
@@ -41,6 +47,7 @@ function handleMove(position) {
 
     if (gameBoard.every(cell => cell.textContent !== "")) {
         text.innerHTML = "The game is draw";
+        setCellsEnabled(false);
         setTimeout(() => {
             endGame();
         }, 1000);
@@ -75,5 +82,27 @@ function startGame() {
 }
 function endGame() {
     gameBoard.forEach(cell => cell.textContent = "");
+    setCellsEnabled(true);
     text.innerHTML = "Start";
+}
+function score(winner) {
+    if (winner === "❌") {
+        x++;
+        scoreX.innerHTML = x;
+    } else {
+        o++;
+        scoreO.innerHTML = o;
+    }
+}
+function resetGame() {
+    x = 0;
+    o = 0;
+    scoreX.innerHTML = 0;
+    scoreO.innerHTML = 0;
+    endGame();
+}
+function setCellsEnabled(enabled) {
+    gameBoard.forEach(cell => {
+        cell.disabled = !enabled;
+    });
 }
