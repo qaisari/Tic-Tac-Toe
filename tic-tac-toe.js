@@ -33,6 +33,7 @@ function handleMove(position) {
         gameBoard[position].textContent = currentPlayer;
     } else {
         alert("Current position is occupied");
+        return;
     }
     
     if (checkWin()) {
@@ -53,10 +54,16 @@ function handleMove(position) {
         }, 1000);
         return;
     }
-    setTimeout(() => {
-        currentPlayer = currentPlayer === "❌" ? "⭕" : "❌";
-        text.innerHTML = `Player ${currentPlayer} enter your move: `;
-    }, 100);
+    currentPlayer = currentPlayer === "❌" ? "⭕" : "❌";
+    // text.innerHTML = `Player ${currentPlayer} enter your move: `;
+    if (window.location.href.includes('bot.html') && currentPlayer === "⭕") {
+        text.innerHTML = "Bot is thinking...";
+        setTimeout(() => {
+            botMove();
+        }, 500);
+    } else {
+        text.innerHTML = `Player ${currentPlayer} enter your move: `
+    }
     
 }
 function checkWin() {
@@ -105,4 +112,24 @@ function setCellsEnabled(enabled) {
     gameBoard.forEach(cell => {
         cell.disabled = !enabled;
     });
+}
+function botMove() {
+    const emptyCells = [];
+    gameBoard.forEach((cell, index) => {
+        if(cell.textContent === "") {
+            emptyCells.push(index);
+        }
+    });
+    if (emptyCells.length > 0) {
+        const randomIndex = Math.floor(Math.random() * emptyCells.length);
+        const botChoice = emptyCells[randomIndex];
+        handleMove(botChoice);
+    }
+}
+function botGame() {
+    currentPlayer = "❌";
+    text.innerHTML = `Player ${currentPlayer} enter move: `;
+    setCellsEnabled(true);
+    //clear the board
+    gameBoard.forEach(cell => cell.textContent = "");
 }
