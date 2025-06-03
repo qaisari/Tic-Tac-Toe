@@ -36,8 +36,20 @@ function handleMove(position) {
         return;
     }
     
-    if (checkWin()) {
-        text.innerHTML = `Player ${currentPlayer} won!`;
+    if (checkWin() && window.location.href.includes("bot.html")) {
+        if(currentPlayer === "❌") {
+            text.innerHTML = "Player ❌ Won!";
+        } else {
+            text.innerHTML = "Bot ⭕ Won!"
+        }
+        score(currentPlayer);
+        setCellsEnabled(false);
+        setTimeout(() => {
+            endGame();
+        }, 1000);
+        return;
+    } else if (checkWin() && window.location.href.includes("index.html")) {
+        text.innerHTML = `Player ${currentPlayer} Won!`;
         score(currentPlayer);
         setCellsEnabled(false);
         setTimeout(() => {
@@ -55,12 +67,16 @@ function handleMove(position) {
         return;
     }
     currentPlayer = currentPlayer === "❌" ? "⭕" : "❌";
-    // text.innerHTML = `Player ${currentPlayer} enter your move: `;
     if (window.location.href.includes('bot.html') && currentPlayer === "⭕") {
-        text.innerHTML = "Bot is thinking...";
+        let dots = 0;
+        const thinkingInterval = setInterval(() => {
+            dots = (dots % 4) + 1;
+            text.innerHTML = "Bot is thinking" + ".".repeat(dots);
+        }, 300);
         setTimeout(() => {
+            clearInterval(thinkingInterval);
             botMove();
-        }, 500);
+        }, 2500);
     } else {
         text.innerHTML = `Player ${currentPlayer} enter your move: `
     }
@@ -90,6 +106,7 @@ function startGame() {
 function endGame() {
     gameBoard.forEach(cell => cell.textContent = "");
     setCellsEnabled(true);
+    currentPlayer = "❌";
     text.innerHTML = "Start";
 }
 function score(winner) {
@@ -126,10 +143,10 @@ function botMove() {
         handleMove(botChoice);
     }
 }
-function botGame() {
-    currentPlayer = "❌";
-    text.innerHTML = `Player ${currentPlayer} enter move: `;
-    setCellsEnabled(true);
-    //clear the board
-    gameBoard.forEach(cell => cell.textContent = "");
-}
+// function botGame() {
+//     currentPlayer = "❌";
+//     text.innerHTML = `Player ${currentPlayer} enter move: `;
+//     setCellsEnabled(true);
+//     //clear the board
+//     gameBoard.forEach(cell => cell.textContent = "");
+// }
